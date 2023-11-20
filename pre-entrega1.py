@@ -1,50 +1,48 @@
 # inicio de sesion, registro y lectura de base de datos
 import json
 
-archive = 'proyecto/db.txt'
+archive = 'proyecto/db.json'
 
 def register():
     user = input('Ingrese su nombre de usuario: ')
     password = input('Ingrese su contraseña: ')
     
-    new_data = {
-        user : password
-    }
+    try:
+        with open(archive, 'r') as file_in_db:
+            data = json.load(file_in_db)
+    except: 
+        data = {'users': []}
+        
+    for user_in_db in data['users']:
+        if user in user_in_db:
+            print('El usuario ya existe. Inicie sesion')
+            return
     
-    with open(archive, 'r') as file_in_db:
-        for line in file_in_db:
-            data = json.loads(line)
-            if user in data:
-                print('El usuario ya existe. Inicie sesion')
-                return
-    file_in_db.close()
+    new_user = {user : password}    
+    data['users'].append(new_user)
     
-    with open(archive, 'a') as file:
-        json.dump(new_data, file)
-        file.write('\n')
-    
+    with open(archive, 'w') as file:
+        json.dump(data, file, indent = 4)
+        
 def login():
     user = input('usuario: ')
     password = input('contraseña: ')
     
     with open(archive, 'r') as file:
-        for line in file:
-            data = json.loads(line)
-            if user in data and data[user] == password:
-                print(f'Bienvenido {user}') 
-                return True
+        data = json.load(file)
+        
+    for user_in_db in data['users']:
+        if user in user_in_db and user_in_db[user] == password:
+            print(f'BIENVENIDO: {user.upper()}')
+            return
         
     print('Usuario o contraseña incorrectos. Intente de nuevo')
-
+    
 def read_db():
     with open(archive, 'r') as file:
-        for line in file:
-            data = json.loads(line)
-            for userName, password in data.items():
-                print(f'Usuario: {userName}')
-                print(f'Contraseña: {password}')
-                print('-------')
-            
+        data = json.load(file)
+        print(data)
+        
 def show_menu():
     res = int(input('''
                 Ingrese la opcion que desea realizar:
