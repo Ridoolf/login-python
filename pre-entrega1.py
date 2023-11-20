@@ -3,6 +3,15 @@ import json
 
 archive = 'proyecto/db.json'
 
+def read_archive():
+    with open(archive, 'r') as file:
+        data = json.load(file)
+        return data
+    
+def write_archive(data, line_indent):
+    with open(archive, 'w') as file:
+        json.dump(data, file, indent = line_indent)
+
 def register(user, password):
     try:
         with open(archive, 'r') as file_in_db:
@@ -19,12 +28,10 @@ def register(user, password):
     data['users'].append(new_user)
     print('Usuario creado con exito')
     
-    with open(archive, 'w') as file:
-        json.dump(data, file, indent = 4)
+    write_archive(data, 4)
         
 def login(user, password):
-    with open(archive, 'r') as file:
-        data = json.load(file)
+    data = read_archive()
         
     for user_in_db in data['users']:
         if user in user_in_db and user_in_db[user] == password:
@@ -34,9 +41,8 @@ def login(user, password):
     print('Usuario o contraseña incorrectos. Intente de nuevo')
     
 def read_db():
-    with open(archive, 'r') as file:
-        data = json.load(file)
-        print(data)
+    data = read_archive()
+    print(data)
         
 def show_menu():
     res = int(input('''
