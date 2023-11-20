@@ -3,10 +3,7 @@ import json
 
 archive = 'proyecto/db.json'
 
-def register():
-    user = input('Ingrese su nombre de usuario: ')
-    password = input('Ingrese su contraseña: ')
-    
+def register(user, password):
     try:
         with open(archive, 'r') as file_in_db:
             data = json.load(file_in_db)
@@ -20,14 +17,12 @@ def register():
     
     new_user = {user : password}    
     data['users'].append(new_user)
+    print('Usuario creado con exito')
     
     with open(archive, 'w') as file:
         json.dump(data, file, indent = 4)
         
-def login():
-    user = input('usuario: ')
-    password = input('contraseña: ')
-    
+def login(user, password):
     with open(archive, 'r') as file:
         data = json.load(file)
         
@@ -50,10 +45,13 @@ def show_menu():
                 2 - Registrarse
                 3 - Imprimir datos 
                 '''))
-    if res == 1:
-        login()
-    elif res == 2:
-        register()
+    if res == 1 or res ==  2:
+        user = input('Ingrese su nombre de usuario: ')
+        password = input('Ingrese su contraseña: ')
+        if res == 1:
+            login(user, password)
+        else:
+            register(user, password)
     elif res == 3:
         read_db()
     else:
