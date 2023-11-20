@@ -46,18 +46,18 @@ def read_db():
         
 def show_menu():
     res = int(input('''
-                Ingrese la opcion que desea realizar:
-                1 - Iniciar Sesion
-                2 - Registrarse
-                3 - Imprimir datos 
-                '''))
+    Ingrese la opcion que desea realizar:
+    1 - Registrarse
+    2 - Iniciar Sesion
+    3 - Imprimir datos 
+    Opcion: '''))
     if res == 1 or res ==  2:
         user = input('Ingrese su nombre de usuario: ')
         password = input('Ingrese su contraseña: ')
         if res == 1:
-            login(user, password)
-        else:
             register(user, password)
+        else:
+            login(user, password)
     elif res == 3:
         read_db()
     else:
