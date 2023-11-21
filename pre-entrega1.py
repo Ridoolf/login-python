@@ -14,8 +14,7 @@ def write_archive(data, line_indent):
 
 def register(user, password):
     try:
-        with open(archive, 'r') as file_in_db:
-            data = json.load(file_in_db)
+        read_archive()
     except: 
         data = {'users': []}
         
