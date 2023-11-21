@@ -4,7 +4,7 @@ archive = 'proyecto/db.json'
 
 # TOMA DE DATOS
 
-def get_datos(res):
+def get_datos():
     print('-----------------------------------')
     user = input('Ingrese su nombre de usuario: ')
     password = input('Ingrese su contraseña: ')
@@ -13,7 +13,6 @@ def get_datos(res):
 # VALIDACION DE DATOS
 
 def check_user(user):
-    
     while True:
         if len(user) > 1 and len(user) < 20 and user.isalpha():
             if ' ' not in user:
@@ -78,10 +77,17 @@ def register(user, password):
     show_menu()
         
 def login(user, password):
-    data = read_archive()
+    try: 
+        data = read_archive()
+    except:
+        print('-----------------------------------')
+        print(f'El usuario {user} no existe en la base de datos')
+        show_menu()
+        return
         
     for user_in_db in data['users']:
         if user in user_in_db and user_in_db[user] == password:
+            print('-----------------------------------')
             print(f'BIENVENIDO: {user.upper()}')
             show_menu()
             return
@@ -91,13 +97,13 @@ def login(user, password):
             
 def read_db():
     data = read_archive()
+    print('-----------------------------------')
     print(data)
     show_menu()
         
 def show_menu():
     print('-----------------------------------')
-    res = int(input('''
-Ingrese la opcion que desea realizar:
+    res = int(input('''Ingrese la opcion que desea realizar:
 1 - Registrarse
 2 - Iniciar Sesion
 3 - Imprimir datos
@@ -109,7 +115,7 @@ Opcion: '''))
         res = int(input('Ingrese la opcion correcta: '))
         
     if res == 1 or res ==  2:
-        user, password = get_datos(res)
+        user, password = get_datos()
         if res == 1:
             register(user, password)
         else:
@@ -124,4 +130,3 @@ Opcion: '''))
 # EJECUCION DE FUNCIONES        
 
 show_menu()
-    
